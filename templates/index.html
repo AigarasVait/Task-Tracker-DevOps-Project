@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="heading"><div><p class="eyebrow">MAKE SPACE FOR WHAT MATTERS</p><h1>Your tasks</h1><p class="subtitle">Capture a thought. Make a plan. Keep moving.</p></div><a class="button primary" href="{{ url_for('create_task') }}">+ Add task</a></section>
+<section class="stats" aria-label="Task summary"><div><span>Total tasks</span><strong>{{ counts.total }}</strong></div><div><span>In progress</span><strong>{{ counts.total - counts.done }}</strong></div><div><span>Completed</span><strong class="green">{{ counts.done }}</strong></div></section>
+<nav class="tabs" aria-label="Filter tasks">{% for value, label in [('all', 'All tasks'), ('active', 'Active'), ('completed', 'Completed')] %}<a class="{{ 'selected' if status == value else '' }}" href="{{ url_for('index', status=value) }}" {% if status == value %}aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+<section class="task-list" aria-label="Tasks">
+{% for task in tasks %}
+<article class="task {{ 'is-complete' if task.completed else '' }}">
+  <form method="post" action="{{ url_for('toggle_task', task_id=task.id) }}"><input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"><button class="check" aria-label="{{ 'Mark active: ' if task.completed else 'Complete: ' }}{{ task.title }}">{{ '✓' if task.completed else '' }}</button></form>
+  <div class="task-body"><h2>{{ task.title }}</h2>{% if task.description %}<p class="description">{{ task.description }}</p>{% endif %}<div class="task-meta"><span class="badge">{{ 'Completed' if task.completed else 'Active' }}</span>{% if task.due_date %}<span class="{{ 'overdue' if task.due_date < today and not task.completed else '' }}">{{ 'Overdue · ' if task.due_date < today and not task.completed else 'Due ' }}<time datetime="{{ task.due_date }}">{{ task.due_date }}</time></span>{% endif %}</div></div>
+  <div class="actions"><a href="{{ url_for('edit_task', task_id=task.id) }}" aria-label="Edit: {{ task.title }}">Edit</a><form method="post" action="{{ url_for('delete_task', task_id=task.id) }}" onsubmit="return confirm('Delete this task? This cannot be undone.');"><input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"><button class="delete" aria-label="Delete: {{ task.title }}">Delete</button></form></div>
+</article>
+{% else %}
+<div class="empty"><span class="empty-icon">✓</span><h2>{{ 'A fresh start' if status == 'all' else 'Nothing here yet' }}</h2><p>{{ 'Add your first task and take it one step at a time.' if status == 'all' else 'Tasks matching this filter will appear here.' }}</p>{% if status == 'all' %}<a class="button primary" href="{{ url_for('create_task') }}">+ Create your first task</a>{% endif %}</div>
+{% endfor %}
+</section>
+{% endblock %}

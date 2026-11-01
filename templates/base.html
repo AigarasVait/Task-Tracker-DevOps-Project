@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Task tracker{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">✓</span> Task tracker</a><span class="tagline">A little structure. More room to focus.</span></header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer>Your tasks, one step at a time.</footer>
+</body>
+</html>

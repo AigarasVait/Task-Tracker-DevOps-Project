@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ 'Edit' if editing else 'Add' }} task · Task tracker{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Back to tasks</a>
+<section class="form-heading"><p class="eyebrow">ONE STEP AT A TIME</p><h1>{{ 'Edit task' if editing else 'Add a task' }}</h1><p class="subtitle">Give your next step a place to start.</p></section>
+<form class="task-form" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <label for="title">Task title <span class="required">(required)</span></label><input id="title" name="title" maxlength="200" required value="{{ task.title or '' }}" placeholder="What would you like to get done?" autofocus>
+  <label for="description">Notes <span class="required">(optional)</span></label><textarea id="description" name="description" rows="5" maxlength="5000" placeholder="Add a few details…">{{ task.description or '' }}</textarea>
+  <label for="due_date">Due date <span class="required">(optional)</span></label><input type="date" id="due_date" name="due_date" value="{{ task.due_date or '' }}">
+  <div class="form-actions"><a class="button secondary" href="{{ url_for('index') }}">Cancel</a><button class="button primary" type="submit">{{ 'Save changes' if editing else 'Create task' }}</button></div>
+</form>
+{% endblock %}
