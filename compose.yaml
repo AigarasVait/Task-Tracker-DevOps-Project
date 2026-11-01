@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    image: task-tracker
+    ports:
+      - "127.0.0.1:5000:5000"
+    volumes:
+      - task-data:/app/instance
+    restart: unless-stopped
+
+volumes:
+  task-data:
+    name: task-data
