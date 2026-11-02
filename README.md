@@ -55,7 +55,7 @@ Push to main
 
 - **Pull requests targeting `main`** run the test job without publishing an image.
 - **Pushes to `main`** run the tests first. The Docker job only starts if the tests succeed.
-- The image is published as `ghcr.io/aigarasvait/task-tracker` with both `latest` and a commit-specific tag.
+- The image is published as `ghcr.io/aigarasvait/task-tracker-devops-project` with both `latest` and a commit-specific tag.
 
 **Deployment is not automated through GitHub Actions.** The GitHub Actions workflow ends after publishing the image. I deploy/update the application on my Ubuntu Server VM separately rather than using a GitHub Actions SSH deployment job.
 
@@ -71,8 +71,8 @@ This project does **not** use Kubernetes; I plan to explore that in a separate p
 Clone this repository and start the app:
 
 ```bash
-git clone https://github.com/AigarasVait/task-tracker.git
-cd task-tracker
+git clone https://github.com/AigarasVait/Task-Tracker-DevOps-Project.git
+cd Task-Tracker-DevOps-Project
 docker compose up -d --build
 ```
 
@@ -117,14 +117,14 @@ The [`Dockerfile`](Dockerfile) uses `python:3.14-slim`, installs dependencies fr
 A published image can be pulled using:
 
 ```bash
-docker pull ghcr.io/aigarasvait/task-tracker:latest
+docker pull ghcr.io/aigarasvait/task-tracker-devops-project:latest
 ```
 
 For repeatable deployments, a **commit SHA tag** is preferable to the moving `latest` tag. Depending on the package's visibility, pulling from GHCR may require authentication.
 
 ## Local Ubuntu Server lab
 
-To practise deployment beyond my development laptop, I set up a separate **Ubuntu Server virtual machine** using **KVM/QEMU and Virtual Machine Manager**. This helped me learn about Linux services, virtual networking, ports, SSH, and running containers on a server.
+To practice deployment beyond my development laptop, I set up a separate **Ubuntu Server virtual machine** using **KVM/QEMU and Virtual Machine Manager**. This helped me learn about Linux services, virtual networking, ports, SSH, and running containers on a server.
 
 The server setup and application deployment work, but **updating the VM is a separate/manual step**; GitHub Actions currently automates testing and image publishing, not remote deployment.
 
