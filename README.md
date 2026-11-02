@@ -1,6 +1,6 @@
 # Flask Task Tracker | DevOps Learning Project
 
-A small task-tracking web application that I used to practise **Python testing, Docker, Docker Compose, GitHub Actions, container registries, Linux, and server deployment**.
+A small task-tracking web application that I used to practice **Python testing, Docker, Docker Compose, GitHub Actions, container registries, Linux, and server deployment**.
 
 The aim of this project was not just to create a to-do app. I wanted to understand how an application goes from source code to a tested Docker image that can run on a separate Ubuntu Server virtual machine.
 
@@ -21,7 +21,7 @@ The application also includes input validation, CSRF protection, and HTML escapi
 | --- | --- |
 | Python + Flask | Built the web application using an application factory. |
 | SQLite | Stored task data locally. |
-| `unittest` | Tested task operations, validation, persistence, and security-related behaviour. |
+| `unittest` | Tested task operations, validation, persistence, and security-related behavior. |
 | Gunicorn | Served the Flask application inside the container. |
 | Docker | Packaged the application and its dependencies into an image. |
 | Docker Compose | Configured and ran the app with a persistent volume. |
@@ -158,7 +158,3 @@ Some of the most useful lessons came from troubleshooting:
 - Add container health checks and more deployment documentation.
 - Add authentication and HTTPS before considering public access.
 - Document a reliable backup and restore process for the SQLite volume.
-
----
-
-**Why this repository exists:** It documents my progress learning DevOps through a working project, including the application, the automation I implemented, and the problems I solved along the way.
