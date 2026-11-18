@@ -6,9 +6,15 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
-
 RUN mkdir -p /app/instance
+
+RUN useradd --create-home --uid 1000 app
+
+COPY --chown=app:app . .
+
+RUN mkdir -p /app/instance && chown app:app /app/instance
+
+USER app
 
 EXPOSE 5000
 
