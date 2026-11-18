@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
 
@@ -18,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.14'
+          python-version: "3.14"
 
       - name: Install dependencies
         run: |
@@ -28,8 +27,38 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -v
 
-  docker:
+  smoke-test:
     needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build image
+        run: docker build -t task-tracker:ci .
+
+      - name: Start container
+        run: docker run -d --name tt -p 5000:5000 task-tracker:ci
+
+      - name: Wait for /health
+        run: |
+          for i in $(seq 1 15); do
+            if curl -fsS http://127.0.0.1:5000/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Health check failed"
+          docker logs tt
+          exit 1
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f tt
+
+  docker:
+    needs: smoke-test
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
