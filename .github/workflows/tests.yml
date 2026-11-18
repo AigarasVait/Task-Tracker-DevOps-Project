@@ -43,6 +43,16 @@ jobs:
       - name: Build image
         run: docker build -t task-tracker:ci .
 
+      - name: Scan image with Trivy
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.76.2 image \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 0 \
+            task-tracker:ci
+
       - name: Start container
         run: docker run -d --name tt -p 5000:5000 task-tracker:ci
 
