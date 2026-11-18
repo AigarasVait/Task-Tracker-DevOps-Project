@@ -96,6 +96,11 @@ def create_app(test_config=None):
         counts = db.execute("SELECT COUNT(*) AS total, COALESCE(SUM(completed), 0) AS done FROM tasks").fetchone()
         return render_template("index.html", tasks=tasks, counts=counts, status=status, today=date.today().isoformat())
 
+    @app.get("/health")
+    def health():
+        get_db().execute("SELECT 1").fetchone()
+        return {"status": "ok"}
+
     @app.route("/tasks/new", methods=["GET", "POST"])
     def create_task():
         task, error = {}, None

@@ -23,6 +23,11 @@ class TaskTrackerTests(unittest.TestCase):
     def post(self, path, **data):
         return self.client.post(path, data={"csrf_token": self.token, **data})
 
+    def test_health_endpoint(self):
+        response = self.client.get("/health")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"status": "ok"})
+
     def test_full_task_lifecycle_and_persistence(self):
         response = self.post("/tasks/new", title="Read chapter", description="Take notes", due_date="2026-12-01")
         self.assertEqual(response.status_code, 302)
